@@ -1,0 +1,77 @@
+// ---------------------------------------------------------------------------
+// Imports
+
+@import "susy";
+
+
+// ---------------------------------------------------------------------------
+// Custom Mixins
+
+@mixin serif() {
+	font-family: 'Lora', Georgia, sans-serif;
+}
+
+@mixin sans-serif() {
+	font-family: 'Roboto Condensed', Helvetica, sans-serif;
+}
+
+@mixin root-container() {
+	@include container;
+	@if($show-grid-backgrounds) {
+		@include susy-grid-background;
+	}
+	max-width:$container-max-width;
+}
+
+@mixin clear-content {		
+	zoom: 1;
+	
+	&:after, &:before{
+		content: " ";
+		display: table;
+		clear: both;
+		height: 0px;
+		visibility: hidden;
+	}
+}
+
+// ---------------------------------------------------------------------------
+// Font Settings
+
+$base-font-size: 16px;
+$base-line-height: 24px;
+
+// ---------------------------------------------------------------------------
+// Custom Functions
+
+@function pxtoem($px, $base: $base-font-size){
+	@return ($px / $base) + 0em;
+}
+
+// ---------------------------------------------------------------------------
+// Color Palette
+
+$off-white: #f2f2f2;
+$grey: #8A8C8F;
+$dark-grey: #231f20;
+$orange: #D14D1D;
+
+
+// ---------------------------------------------------------------------------
+// Grid Settings
+
+$total-columns: 12;
+$column-width: 3.5em;
+$gutter-width: 2em;
+$container-max-width: 85%;
+$show-grid-backgrounds: false;
+
+// ---------------------------------------------------------------------------
+// Breakpoints
+
+$iphone-portrait: pxtoem(320px);
+$iphone-landscape: pxtoem(480px);
+$ipad-portrait: pxtoem(750px);
+$ipad-landscape: pxtoem(1024px);
+
+

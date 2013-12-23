@@ -1,0 +1,275 @@
+/* Imports */
+
+@import "base";
+@import "compass";
+@import "compass/reset";
+
+BODY {
+	color: #324972;
+	background-color: #f5f5f5;
+	font-family: 'Roboto', serif;
+	font-weight: 300;
+	font-size: 1.5em;
+	margin: 0;
+	padding: 0;
+}
+
+#root {
+	@include root-container;
+	position: relative;
+	padding-bottom: 100px;
+}
+
+#header {
+	/*
+	@include at-breakpoint($ipad-portrait) {
+		put anything here that you WANT to display beyond ipad portrait dimensions
+		display: block;
+	}
+	*/
+	background-color: #fff;
+	padding: 0px;
+	color: #012C7F;
+	border-bottom: 5px solid #324972;
+	margin-bottom: 25px;
+
+	#left {
+		display: inline-block;
+
+		img {
+			width: 275px;
+		}
+	}
+
+	#right {
+		display: inline-block;
+		float: right;
+		margin-right: 20px;
+		margin-top: 35px;
+
+		img {
+			width: 22px;
+		}
+	}
+}
+
+h1 {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 100;
+	font-size: 2.5em;
+	color: #014282;
+	margin-top: 30px;
+	margin-bottom: 75px;
+}
+
+.highlight {
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	padding: 8px 6px 2px;
+	border: 0;
+	color: #fff;
+	font-style: normal;
+
+	 &.teal {
+		background-color: #1096BF;
+	}
+}
+
+.center {
+	text-align: center;
+}
+
+.inline-block {
+	display: inline-block;
+}
+
+.button {
+	display: block;
+	@include at-breakpoint($ipad-portrait) {
+		display: inline-block;
+		margin-bottom: 25px;
+	}
+	margin: 0;
+	height: 60px;
+	width: 250px;
+	border: none;
+	font-family: inherit;
+	font-size: inherit;
+	color: inherit;
+	background: #1096BF;
+	cursor: pointer;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: 300;
+	outline: none;
+	text-align: center;
+	vertical-align: bottom;
+}
+
+fieldset { 
+	border-top:1px solid #ccc;
+	border-left:0;
+	border-bottom:0;
+	border-right:0;
+	padding:6px;
+	margin:0px 30px 0px 0px;
+}
+
+legend {
+	text-align:left;
+	color:#ccc;
+	font-size:18px;
+	padding:0px 4px 0px 4px;
+	margin-left:20px;
+	margin-bottom:15px;
+}
+
+.form-wrapper {
+	margin: 4px 4px 0px 0px;
+
+	.form-item {
+		width: 20%;
+		margin-right: 30px;
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		input[type="text"] {
+			border: none;
+			outline: none;
+			background: #fff;
+			height: 60px;
+			margin: 0;
+			z-index: 10;
+			padding: 10px;
+			width: 100%;
+			font-size: 1em;
+		}
+	}
+
+	.form-item-inline {
+		display: block;
+		@include at-breakpoint($ipad-landscape) {
+			display: inline-block;
+			width: 25%;
+			margin-bottom: 25px;
+		}
+		width: 100%;
+		margin-right: 30px;
+		margin-bottom: 25px;
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		input[type="text"] {
+			border: none;
+			outline: none;
+			background: #fff;
+			height: 60px;
+			margin: 0;
+			z-index: 10;
+			padding: 10px;
+			width: 100%;
+			font-size: 1em;
+		}
+	}
+}
+
+/* search-results-table-wrapper is used for viewing any search results for positions, students, companies, and supervisors */
+.search-results-table-wrapper {
+	margin-top: 25px;
+	margin-bottom: 25px;
+	width: 85%;
+
+	table {
+		width: 100%;
+
+		thead {
+			background-color: lightgrey;
+			color: #383838;
+			font-size: .75em;
+
+			tr th {
+				padding: 10px;
+			}
+		}
+
+		tbody {
+			tr td {
+				font-size: .65em;
+				padding: 10px;
+			}
+
+			tr td a {
+				color: inherit;
+				text-decoration: none;
+			}
+		}
+	}
+}
+
+/* item wrapper is used for viewing a student, company, supervisor, or position detail page */
+.item-wrapper {
+
+	width: 100%;
+	margin: 0 auto;
+
+	@include at-breakpoint($ipad-landscape) {
+		width: 60%;
+		margin: 0 auto;
+	}
+
+	.form-item {
+		width: 100%;
+		@include at-breakpoint($ipad-landscape) {
+			width: 75%;
+		}
+		margin-right: 30px;
+		margin-bottom: 25px;
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		input[type="text"] {
+			border: none;
+			outline: none;
+			background: #fff;
+			height: 60px;
+			margin: 0;
+			z-index: 10;
+			padding: 10px;
+			width: 100%;
+			font-size: 1em;
+		}
+
+		textarea {
+			width: 100%;
+			height: 150px;
+			border: 1px solid #324972;
+			border-left: 10px solid #324972;
+			font-size: 1em;
+			padding: 10px;			
+		}
+	}
+}
+
+/* alert boxes */
+.alert-box {
+	display: none;
+	color: #383838;
+	padding: 10px;
+	margin: 10px;
+	margin-left: 0;
+	width: 100%;
+
+	&.error {
+		background: #ffecec;
+		border: 1px solid #f5aca6;
+	}
+}
