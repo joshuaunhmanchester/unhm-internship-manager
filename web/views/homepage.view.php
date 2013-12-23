@@ -43,6 +43,7 @@ class HomepageView {
 							<div class="st-content">
 								<!--student content-->
 								$studentHtml
+								
 							</div>
 						</li>
 						<li>
