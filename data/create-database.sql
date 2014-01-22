@@ -60,7 +60,7 @@ ALTER TABLE `position` ADD CONSTRAINT `supervisor_student_fk` FOREIGN KEY (`stud
 ALTER TABLE `position` ADD CONSTRAINT `supervisor_company_fk` FOREIGN KEY (`companyId`) REFERENCES company(`companyId`);
 ALTER TABLE `position` ADD CONSTRAINT `supervisor_supervisor_fk` FOREIGN KEY (`supervisorId`) REFERENCES supervisor(`supervisorId`);
 
--- create view to view a position (http://skyontech.com/blog/create-MySQL-view-in-phpMyAdmin)
+-- create view to view a specific position, joining all the tables together (http://skyontech.com/blog/create-MySQL-view-in-phpMyAdmin)
 SELECT s.first_name AS StudentFirstName, s.last_name AS StudentLastName, s.email AS StudentEmail, 
 	   s.grad_year AS StudentGradYear, s.advisor AS StudentAdvisor,
 	   c.name AS CompanyName, 
@@ -71,3 +71,9 @@ FROM position p
 INNER JOIN student s ON p.studentId = s.studentId
 INNER JOIN company c ON p.companyId = c.companyId
 INNER JOIN supervisor sv ON p.supervisorId = sv.supervisorId
+
+-- create a view to view a supervisor and join the company table
+SELECT s.supervisorId AS SupervisorId, s.first_name AS SupervisorFirstName, s.last_name AS SupervisorLastName, s.email AS SupervisorEmail, s.phone AS SupervisorPhone, 
+       c.companyId AS CompanyId, c.name AS CompanyName
+FROM supervisor s
+INNER JOIN company c ON s.companyId = c.companyId

@@ -3,7 +3,7 @@ ob_start();
 //Turn on output buffering.  While output buffering is active no output is sent 
 //from the script (other than headers), instead the output is stored in an internal buffer.
 
-include('../classes/student.class.php');
+include_once('../classes/student.class.php');
 
 
 class StudentController {
@@ -24,6 +24,14 @@ class StudentController {
 		StudentView::buildStudentSearchResults($studentsArray);
 	}
 
+	public function addStudent($data) {
+		$student = new Student();
+		$student = $student->buildStudentObject($data);
+		$newStudentId = $student->createStudent($student);
+
+		echo $newStudentId;
+	}
+
 	public function getStudent($studentId) {
 		include_once('../views/student.view.php');
 
@@ -40,11 +48,7 @@ class StudentController {
 		$student = new Student();
 		$student = $student->buildStudentObject($data);
 		$results = $student->editStudent($student);
-		if($results === 1) {
-			header('Location: /internship');
-		} else {
-
-		}
+		
 		echo $results;
 	}
 	

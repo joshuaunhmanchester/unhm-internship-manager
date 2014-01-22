@@ -75,6 +75,22 @@ h1 {
 	}
 }
 
+.note {
+	margin-bottom: 25px;
+	color: white;
+	padding: 5px;
+	border-radius: 5px;
+	width: auto;
+	display: inline-block;
+
+	&.red {
+		background: lightcoral;
+	}
+	&.small {
+		font-size: .5em;
+	}
+}
+
 .center {
 	text-align: center;
 }
@@ -91,7 +107,7 @@ h1 {
 	}
 	margin: 0;
 	height: 60px;
-	width: 250px;
+	width: 145px;
 	border: none;
 	font-family: inherit;
 	font-size: inherit;
@@ -107,21 +123,33 @@ h1 {
 }
 
 fieldset { 
-	border-top:1px solid #ccc;
-	border-left:0;
-	border-bottom:0;
-	border-right:0;
-	padding:6px;
-	margin:0px 30px 0px 0px;
+	border: 1px solid #ccc;
+	border-left: 0;
+	border-bottom: 0;
+	border-right: 0;
+	padding: 6px;
+	margin-bottom: 20px;
 }
 
 legend {
-	text-align:left;
-	color:#ccc;
-	font-size:18px;
-	padding:0px 4px 0px 4px;
-	margin-left:20px;
-	margin-bottom:15px;
+	text-align: left;
+	color: #ccc;
+	font-weight: 100;
+	font-size: 1.3em;
+	padding: 0px 4px 0px 4px;
+	margin-left: 20px;
+	margin-bottom: 15px;
+}
+
+.create-entity-wrapper {
+	h1 {
+		font-family: 'Roboto', sans-serif;
+		font-weight: 100;
+		font-size: 1.3em;
+		color: #ccc;
+		margin-top: 0;
+		margin-bottom: 25px;
+	}
 }
 
 .form-wrapper {
@@ -129,11 +157,20 @@ legend {
 
 	.form-item {
 		width: 20%;
+		margin-bottom: 30px;
 		margin-right: 30px;
 
 		label {
 			display: block;
 			margin-bottom: 5px;
+			font-size: 1em;
+			font-weight: 100;
+
+			span {
+				color: red;
+				font-size: 15px;
+				vertical-align: top;
+			}
 		}
 
 		input[type="text"] {
@@ -163,6 +200,13 @@ legend {
 		label {
 			display: block;
 			margin-bottom: 5px;
+			font-size: 1em;
+			font-weight: 100;
+			span {
+				color: red;
+				font-size: 15px;
+				vertical-align: top;
+			}
 		}
 
 		input[type="text"] {
@@ -177,6 +221,51 @@ legend {
 			font-size: 1em;
 		}
 	}
+}
+
+.create-new-wrapper {
+	margin: 25px 4px 0px 0px;
+
+	.form-item {
+		width: 20%;
+		margin-bottom: 30px;
+		margin-right: 30px;
+
+		&.inline {
+			display: inline-block;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+			font-size: 1em;
+			font-weight: 100;
+
+			span {
+				color: red;
+				font-size: 15px;
+				vertical-align: top;
+			}
+		}
+
+		input[type="text"] {
+			border: none;
+			outline: none;
+			background: #fff;
+			height: 60px;
+			margin: 0;
+			z-index: 10;
+			padding: 10px;
+			width: 100%;
+			font-size: 1em;
+		}
+	}
+}
+
+.disabledAtStart {
+	-moz-user-select: none !important;
+	-webkit-user-select: none !important;;
+	-ms-user-select: none !important;;
 }
 
 /* search-results-table-wrapper is used for viewing any search results for positions, students, companies, and supervisors */
@@ -259,6 +348,10 @@ legend {
 	}
 }
 
+.hiddenAtStart {
+	display: none;
+}
+
 /* alert boxes */
 .alert-box {
 	display: none;
@@ -271,5 +364,29 @@ legend {
 	&.error {
 		background: #ffecec;
 		border: 1px solid #f5aca6;
+	}
+	&.success {
+		background:#e9ffd9;
+    	border: 1px solid #a6ca8a;
+	}
+}
+
+/* create position form */
+.create-options-wrapper {
+	margin-bottom: 5px;
+	input[type="radio"] {
+		vertical-align: bottom;
+	}
+	label {
+		vertical-align: baseline;
+	}
+}
+
+.select-existing-wrapper, .create-new-wrapper {
+	display: none;
+
+	select {
+		margin-top: 20px;
+		width: 300px;
 	}
 }

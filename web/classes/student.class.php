@@ -3,11 +3,13 @@
 * @author Joshua Anderson
 * Date: 12/17/13
 * Description: Class for a Student
+* This class contains all the logic associated with a Student object - inserting, editing, deleting, and any other helper 
+* methods regarding ONLY a Student.
 *
 */
 
-require('../library/common/config.php');
-require('bindparam.class.php');
+include_once('../library/common/config.php');
+include_once('bindparam.class.php');
 
 class Student {
 	public $studentId;
@@ -101,6 +103,45 @@ class Student {
 		return $studentsArray;
 	}
 
+	public function createStudent($student) {
+		$dbContext = connect();
+		if($student != null) {
+			$query = "INSERT INTO student 
+					  (first_name, last_name, email, grad_year, advisor) 
+                      VALUES(?, ?, ?, ?, ?)";
+            $statement = $dbContext->prepare($query);
+
+            if($statement === false) {
+				$error = "Error: Failed to prepare the SQL statement - " . htmlspecialchars($dbContext->error);
+				return $error;
+			}
+
+			$result = $statement->bind_param('sssss', $student->firstName, $student->lastName,
+													  $student->email, $student->gradYear,
+													  $student->advisor);
+			if($result === false) {
+				$error = "Error: Failed to bind params - " . htmlspecialchars($statement->error);
+            	return $error;
+			}
+
+			$result = $statement->execute();
+
+	        if($result == false) {
+	            $error = "Error: Failed to execute - " . htmlspecialchars($statement->error);
+	            return $error;
+	        }
+
+	        $newStudentId =  $dbContext->insert_id;
+
+	        return $newStudentId;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	* 
+	*/
 	public function getStudent($studentId) {
 		$dbContext = connect();
 		$student = new Student();
@@ -139,6 +180,9 @@ class Student {
 		return $student;
 	}
 
+	/**
+	* 
+	*/
 	public function editStudent($student) {
 		$dbContext = connect();
 		$studentId = $student->studentId;
@@ -168,6 +212,45 @@ class Student {
 		return true;
 	}
 
+	public static function getAllStudents() {
+		$dbContext = connect();
+		$studentsArray = array();
+
+		$query = "SELECT studentId, first_name, last_name, email, grad_year, advisor, notes 
+				  FROM student
+				  ORDER BY last_name";
+		$statement = $dbContext->prepare($query);
+		if($statement === false) {
+			echo "Failed to prepare the SQL statement: " . htmlspecialchars($dbContext->error);
+			return false;
+		}
+
+		$result = $statement->execute();
+		if($result === false) {
+			echo "Failed to execute: " . htmlspecialchars($statement->error);
+            return false;
+		}		
+
+		$statement->bind_result($studentId, $fname, $lname, $email, $gradYear, $advisor, $notes);
+		while($statement->fetch()) {
+			$student = new Student();
+			$student->studentId = $studentId;
+			$student->firstName = $fname;
+			$student->lastName = $lname;
+			$student->email = $email;
+			$student->gradYear = $gradYear;
+			$student->advisor = $advisor;
+			$student->notes = $notes;
+
+			$studentsArray[] = $student;
+		}
+
+		return $studentsArray;
+	}
+
+	/**
+	* 
+	*/
 	public function buildStudentObject($data) {
 		$student = new Student();
 		//TODO: add any error checking I might need

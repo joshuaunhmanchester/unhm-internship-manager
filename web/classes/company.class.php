@@ -2,12 +2,17 @@
 /**
 * @author Joshua Anderson
 * Date: 12/17/13
-* Description: Class for a Company
+* Description: Class for a Company entity.
+* This class contains all the logic associated with a Company object - inserting, editing, deleting, and any other helper 
+* methods regarding ONLY a Company.
 *
 */
 
-require('../library/common/config.php');
-require('bindparam.class.php');
+if(!function_exists('connect')) {
+	require_once('../library/common/config.php');	
+}
+
+require_once('bindparam.class.php');
 
 class Company {
 	public $companyId;
@@ -16,12 +21,10 @@ class Company {
 	public $city;
 	public $state;
 
+	function __construct() {
+    }
 	/**
-	* Summary: This method will query the student database table to collect records of students
-	* and create a Student Object array to pass back to the controller
-	* @param: $filters = the $_POST array from the homepage student search form contains three $_POST values for the first and last name, and email
-	* @return: This will return a view from the StudentView class which will produce a HTML table with the results when we pass it 
-	* an array of Student objects
+	* 
 	*/
 	public function getCompaniesFromSearch($name) {
 		$companyArray = array();
@@ -74,20 +77,96 @@ class Company {
 		return $companyArray;
 	}
 
-	public function getStudent($studentId) {
+	public function createCompany($company) {
 		$dbContext = connect();
-		$student = new Student();
-		$student->studentId = $studentId;
+		if($company != null) {
+			$query = "INSERT INTO company 
+					  (name, website, city, state) 
+                      VALUES(?, ?, ?, ?)";
+            $statement = $dbContext->prepare($query);
 
-		$query = "SELECT first_name, last_name, email, grad_year, advisor, notes FROM student
-				  WHERE studentId = ? LIMIT 1";
+            if($statement === false) {
+				$error = "Error: Failed to prepare the SQL statement - " . htmlspecialchars($dbContext->error);
+				return $error;
+			}
+
+			$result = $statement->bind_param('ssss', $company->name, $company->website,
+													  $company->city, $company->state);
+			if($result === false) {
+				$error = "Error: Failed to bind params - " . htmlspecialchars($statement->error);
+            	return $error;
+			}
+
+			$result = $statement->execute();
+
+	        if($result == false) {
+	            $error = "Error: Failed to execute - " . htmlspecialchars($statement->error);
+	            return $error;
+	        }
+
+	        $newCompanyId =  $dbContext->insert_id;
+
+	        return $newCompanyId;
+		} else {
+			return false;
+		}
+	}
+
+	public static function getAllCompanies() {
+		$dbContext = connect();
+		$companiesArray = array();
+
+		$query = "SELECT companyId, name, website, city, state
+				  FROM company
+				  ORDER BY name";
 		$statement = $dbContext->prepare($query);
 		if($statement === false) {
 			echo "Failed to prepare the SQL statement: " . htmlspecialchars($dbContext->error);
 			return false;
 		}
 
-		$result = $statement->bind_param('i', $studentId);
+		$result = $statement->execute();
+		if($result === false) {
+			echo "Failed to execute: " . htmlspecialchars($statement->error);
+            return false;
+		}		
+
+		$statement->bind_result($companyId, $name, $website, $city, $state);
+		while($statement->fetch()) {
+			$company = new Company();
+			$company->companyId = $companyId;
+			$company->name = $name;
+			$company->website = $website;
+			$company->city = $city;
+			$company->state = $state;
+
+			$companiesArray[] = $company;
+		}
+
+		return $companiesArray;
+	}
+
+	/**
+	* 
+	*/
+	public static function getCompany($companyId) {
+		//this is static so Supervisor class can call this to set the 
+		//fk object
+		$dbContext = connect();
+		$company = new Company();
+		$company->companyId = $companyId;
+
+		$query = "SELECT name, website, city, state 
+				  FROM company 
+				  WHERE companyId = ? LIMIT 1";
+				  
+		$statement = $dbContext->prepare($query);
+		if($statement === false) {
+			echo "Failed to prepare the SQL statement: " . htmlspecialchars($dbContext->error);
+			return false;
+		}
+
+		$result = $statement->bind_param('i', $companyId);
 		if($result === false) {
 			echo "Failed to bind params: " . htmlspecialchars($statement->error);
             return false;
@@ -99,34 +178,35 @@ class Company {
             return false;
 		}		
 
-		$statement->bind_result($fname, $lname, $email, $gradYear, $advisor, $notes);
+		$statement->bind_result($name, $website, $city, $state);
 		while($statement->fetch()) {
-			$student->firstName = $fname;
-			$student->lastName = $lname;
-			$student->email = $email;
-			$student->gradYear = $gradYear;
-			$student->advisor = $advisor;
-			$student->notes = $notes;
+			$company->name = $name;
+			$company->website = $website;
+			$company->city = $city;
+			$company->state = $state;
 		}
 
-		return $student;
+		return $company;
 	}
 
-	public function editStudent($student) {
+	/**
+	* 
+	*/
+	public function editCompany($company) {
 		$dbContext = connect();
-		$studentId = $student->studentId;
-		$query = "UPDATE student SET first_name = ?, last_name = ?, email = ?, grad_year = ?, advisor = ?, notes = ?
-				  WHERE studentId = ?";
+		$companyId = $company->companyId;
+		$query = "UPDATE company 
+				  SET name = ?, website = ?, city = ?, state = ?
+				  WHERE companyId = ?";
 		$statement = $dbContext->prepare($query);
 		if($statement === false) {
 			$error = "Error: Failed to prepare the SQL statement: " . htmlspecialchars($dbContext->error);
 			return $error;
 		}
 
-		$result = $statement->bind_param('sssissi', $student->firstName, $student->lastName,
-													$student->email, $student->gradYear,
-													$student->advisor, $student->notes,
-													$studentId);
+		$result = $statement->bind_param('ssssi', $company->name, $company->website,
+												  $company->city, $company->state,
+												  $companyId);
 		if($result === false) {
 			$error = "Error: Failed to bind params: " . htmlspecialchars($statement->error);
             return $error;
@@ -141,18 +221,19 @@ class Company {
 		return true;
 	}
 
-	public function buildStudentObject($data) {
-		$student = new Student();
+	/**
+	* 
+	*/
+	public function buildCompanyObject($data) {
+		$company = new Company();
 		//TODO: add any error checking I might need
-		$student->studentId = $data['studentId'];
-		$student->firstName = $data['txtStudentFName'];
-		$student->lastName = $data['txtStudentLName'];
-		$student->email = $data['txtStudentEmail'];
-		$student->gradYear = $data['txtStudentGradYear'];
-		$student->advisor = $data['txtStudentAdvisor'];
-		$student->notes = $data['txtStudentNotes'];
+		$company->companyId = $data['companyId'];
+		$company->name = $data['txtCompanyName'];
+		$company->website = $data['txtCompanyWebsite'];
+		$company->city = $data['txtCompanyCity'];
+		$company->state = $data['txtCompanyState'];
 
-		return $student;
+		return $company;
 	}
 }
 

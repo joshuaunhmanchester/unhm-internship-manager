@@ -6,7 +6,7 @@ class StudentView {
 		return <<<HTML
 			<form method="post" id="studentSearchForm" action="./api/students.api.php?action=search">
 				<fieldset>
-					<legend>Search Students</legend>
+					<legend>Search</legend>
 					<input type="hidden" name="action" value="search" />
 					<div class="form-wrapper">
 						<div class="form-item-inline">
@@ -21,11 +21,42 @@ class StudentView {
 							<label for="student-search-email">Email</label>
 							<input type="text" id="student-search-email" name="txtStudentEmail" />
 						</div>
-						<input id="btnStudentSearch" class="button" type="submit" value="submit" />
+						<input id="btnStudentSearch" class="button" type="submit" value="search" />
 					</div>
 				</fieldset>
 			</form>
 			<div id="student-search-results-wrapper" class="search-results-table-wrapper"></div>
+			<div class="create-entity-wrapper">
+				<form method="post" id="studentCreateForm" action="./api/students.api.php?action=create">
+				<fieldset>
+					<legend>Create</legend>
+					<div class="form-wrapper">
+						<div class="form-item-inline">
+							<label for="student-create-fname"><span>*</span>First Name</label>
+							<input type="text" id="student-create-fname" name="txtStudentFName" />
+						</div>
+						<div class="form-item-inline">
+							<label for="student-create-lname"><span>*</span>Last Name</label>
+							<input type="text" id="student-create-lname" name="txtStudentLName" />
+						</div>
+						<div class="form-item-inline">
+							<label for="student-create-email"><span>*</span>Email</label>
+							<input type="text" id="student-create-email" name="txtStudentEmail" />
+						</div>
+						<div class="form-item-inline">
+							<label for="student-create-gradYear"><span>*</span>Graduation Year</label>
+							<input type="text" id="student-create-gradYear" name="txtStudentGradYear" />
+						</div>
+						<div class="form-item-inline">
+							<label for="student-create-advisor"><span>*</span>Advisor</label>
+							<input type="text" id="student-create-advisor" name="txtStudentAdvisor" />
+						</div>
+						<input id="btnCreateStudent" class="button" type="submit" value="Create" /> <br />
+						<div class="alert-box" id="studentCreateAlert"></div>
+					</div>
+				</fieldset>
+				</form>
+			</div>
 						
 HTML;
 	}

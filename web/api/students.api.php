@@ -21,6 +21,9 @@ if(isset($_GET['action'])) {
 		case "edit":
 			return $studentController->editStudent($_GET);
 			break;
+		case "create":
+			return $studentController->addStudent($_GET);
+			break;
 	}
 }
 
